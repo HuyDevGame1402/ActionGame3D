@@ -1,0 +1,44 @@
+# This .gitignore file should be placed at the root of your Unity project.
+#
+/[L|l]ibrary/
+/[T|t]emp/
+/[O|o]bj/
+/[B|b]uild/
+/[B|b]uilds/
+/[L|l]ogs/
+/[U|u]ser[D|d]ata/
+/[M|m]emoryCaptures/
+
+# Asset ripper folder
+/[A|a]sset[R|r]ipper/
+
+# Never ignore Asset meta files
+!/[A|a]ssets/**/*.meta
+
+# Editor Generated
+/.vs/
+/*.[C|c]sproj
+/*.sln
+/*.suo
+/*.user
+/*.userprefs
+/*.pidb
+/*.ipch
+/*.rgwb
+/*.bak
+/*.opendb
+/*.tlog
+
+# Crashlytics generated file
+sysinfo.json
+
+# Builds
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# Windows metadata
+Thumbs.db
+Ehthumbs.db
+Desktop.ini
