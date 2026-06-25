@@ -7,6 +7,7 @@ public class PlayerVFXManager : MonoBehaviour
     public static PlayerVFXManager Instance { get; private set; }
     [SerializeField] private VisualEffect footStep;
     [SerializeField] private ParticleSystem Blade01;
+    [SerializeField] private VisualEffect slash;
 
     private void Awake()
     {
@@ -27,5 +28,11 @@ public class PlayerVFXManager : MonoBehaviour
     public void PlayBlade01()
     {
         Blade01.Play();
+    }
+
+    public void PlaySlash(Vector3 pos)
+    {
+        slash.transform.position = pos;
+        slash.Play();
     }
 }

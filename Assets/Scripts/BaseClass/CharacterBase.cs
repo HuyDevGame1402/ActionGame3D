@@ -27,6 +27,7 @@ public abstract class CharacterBase : MonoBehaviour
     public CharacterState currentState;
 
     private Health health;
+    [SerializeField] private DamageCaster damageCaster;
 
     protected virtual void Awake()
     {
@@ -72,6 +73,12 @@ public abstract class CharacterBase : MonoBehaviour
                 break;
 
             case CharacterState.Attacking:
+
+                if(damageCaster != null)
+                {
+                    DisableDamageCaster();
+                }
+
                 break;
         }
         switch (newState)
@@ -95,5 +102,13 @@ public abstract class CharacterBase : MonoBehaviour
         {
             health.ApplyDamage(damage);
         }
+    }
+    public void EnableDamageCaster()
+    {
+        damageCaster.EnableDamageCaster();
+    }
+    public void DisableDamageCaster()
+    {
+        damageCaster.DisableDamageCaster();
     }
 }
