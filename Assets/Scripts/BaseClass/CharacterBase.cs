@@ -26,10 +26,13 @@ public abstract class CharacterBase : MonoBehaviour
     }
     public CharacterState currentState;
 
+    private Health health;
+
     protected virtual void Awake()
     {
         _cc = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        health = GetComponent<Health>();
     }
 
     protected virtual void FixedUpdate()
@@ -85,5 +88,12 @@ public abstract class CharacterBase : MonoBehaviour
     private void AttackAnimationEnds()
     {
         SwitchStateTo(CharacterState.Normal);
+    }
+    public virtual void ApplyDamage(int damage, Vector3 attackPos = new Vector3())
+    {
+        if(health != null)
+        {
+            health.ApplyDamage(damage);
+        }
     }
 }
