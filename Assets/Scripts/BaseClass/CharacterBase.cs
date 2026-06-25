@@ -60,7 +60,7 @@ public abstract class CharacterBase : MonoBehaviour
         // Cập nhật trạng thái trên không cho Animator
         _animator.SetBool(AIRBORNE_PARAM, !_cc.isGrounded);
     }
-    protected void SwitchStateTo(CharacterState newState)
+    protected virtual void SwitchStateTo(CharacterState newState)
     {
         
         switch (currentState)

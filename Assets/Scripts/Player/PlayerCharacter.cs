@@ -8,6 +8,14 @@ public class PlayerCharacter : CharacterBase
     [Header("Player Specific")]
     [SerializeField] private float rotationSpeed = 10f;
 
+    [Header("Attack")]
+    private float attackStartTime;
+    public float attackSlideDuration = 0.1f;
+    public float attackSlideSpeed = 1.5f;
+    private float timePassed;
+    private float lerpTime;
+
+
     protected override void Awake()
     {
         base.Awake(); // Gọi hàm Awake của lớp cha để lấy _cc và _animator
@@ -26,6 +34,16 @@ public class PlayerCharacter : CharacterBase
                 break;
 
             case CharacterState.Attacking:
+                _movementDirection = Vector3.zero;
+
+                if (Time.time < attackStartTime + attackSlideDuration)
+                {
+                    timePassed = Time.time - attackStartTime;
+                    lerpTime = timePassed / attackSlideDuration;
+                    _movementDirection = Vector3.Lerp(transform.forward * attackSlideSpeed,
+                        Vector3.zero, lerpTime);
+                }
+
                 break;
         }
         ApplyGravityAndMove(); // Sử dụng lại logic trọng lực và di chuyển từ lớp cha
@@ -77,5 +95,13 @@ public class PlayerCharacter : CharacterBase
     private void ResetInputMouseDown()
     {
         _playerInput.mouseButtonDown = false;
+    }
+    protected override void SwitchStateTo(CharacterState newState)
+    {
+        base.SwitchStateTo(newState);
+        if(newState == CharacterState.Attacking)
+        {
+            attackStartTime = Time.time;
+        }
     }
 }

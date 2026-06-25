@@ -53,9 +53,20 @@ public class EnemyCharacter : CharacterBase
         {
             _movementDirection = Vector3.zero; // Dừng lại
             _animator.SetFloat(SPEED_PARAM, 0f);
+            SwitchStateTo(CharacterState.Attacking);
         }
 
         // Lúc này _cc.isGrounded đã hoạt động chính xác vì có ApplyGravityAndMove() xử lý bên dưới
         _animator.SetBool(AIRBORNE_PARAM, !_cc.isGrounded);
+    }
+    protected override void SwitchStateTo(CharacterState newState)
+    {
+        if (newState == CharacterState.Attacking)
+        {
+            Quaternion newRotation = Quaternion.LookRotation(_targetPlayer.position - transform.position);
+            transform.rotation = newRotation;
+        }
+
+        base.SwitchStateTo(newState);
     }
 }
