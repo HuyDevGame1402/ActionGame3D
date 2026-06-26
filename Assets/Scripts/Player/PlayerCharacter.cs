@@ -45,6 +45,8 @@ public class PlayerCharacter : CharacterBase
                 }
 
                 break;
+            case CharacterState.Dead:
+                return;
         }
         ApplyGravityAndMove(); // Sử dụng lại logic trọng lực và di chuyển từ lớp cha
     }

@@ -23,19 +23,19 @@ public class DamageCaster : MonoBehaviour
             CharacterBase targetCharacter = other.GetComponent<CharacterBase>();
             if(targetCharacter != null )
             {
-                targetCharacter.ApplyDamage(damage);
+                targetCharacter.ApplyDamage(damage, transform.parent.position);
 
-                RaycastHit hit;
-                Vector3 orignalPos = transform.position + (-damageCasterCollider.bounds.extents.z)
-                    * transform.forward;
-                bool isHit = Physics.BoxCast(orignalPos, damageCasterCollider.bounds.extents / 2,
-                    transform.forward, out hit, transform.rotation, damageCasterCollider.bounds.extents.z,
-                    1 << 6);
+                //RaycastHit hit;
+                //Vector3 orignalPos = transform.position + (-damageCasterCollider.bounds.extents.z)
+                //    * transform.forward;
+                //bool isHit = Physics.BoxCast(orignalPos, damageCasterCollider.bounds.extents / 2,
+                //    transform.forward, out hit, transform.rotation, damageCasterCollider.bounds.extents.z,
+                //    1 << 6);
 
-                if (isHit)
-                {
-                    PlayerVFXManager.Instance.PlaySlash(hit.point + new Vector3(0.5f, 0));
-                }
+                //if (isHit)
+                //{
+                //    PlayerVFXManager.Instance.PlaySlash(hit.point + new Vector3(0.5f, 0));
+                //}
 
             }
             damagedTargetList.Add(other);

@@ -29,6 +29,8 @@ public class EnemyCharacter : CharacterBase
             case CharacterState.Normal:
                 CalculateEnemyMovement();
                 break;
+            case CharacterState.Dead:
+                return;
         }
         ApplyGravityAndMove();
 
@@ -68,5 +70,11 @@ public class EnemyCharacter : CharacterBase
         }
 
         base.SwitchStateTo(newState);
+    }
+
+    public override void ApplyDamage(int damage, Vector3 attackPos = default)
+    {
+        base.ApplyDamage(damage, attackPos);
+        GetComponent<EnemyVFXManager>().PlayBeingHitVFX(attackPos);
     }
 }

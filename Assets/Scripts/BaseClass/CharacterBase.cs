@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
@@ -7,6 +9,7 @@ public abstract class CharacterBase : MonoBehaviour
     protected const string SPEED_PARAM = "Speed";
     protected const string AIRBORNE_PARAM = "AirBorne";
     protected const string ATTACK_PARAM = "Attack";
+    protected const string DEAD_PARAM = "Dead";
 
     protected CharacterController _cc;
     protected Animator _animator;
@@ -22,6 +25,7 @@ public abstract class CharacterBase : MonoBehaviour
     {
         Normal,
         Attacking,
+        Dead,
 
     }
     public CharacterState currentState;
@@ -29,11 +33,23 @@ public abstract class CharacterBase : MonoBehaviour
     private Health health;
     [SerializeField] private DamageCaster damageCaster;
 
+    private MaterialPropertyBlock materialPropertyBlock;
+    private SkinnedMeshRenderer skinnedMeshRenderer;
+
     protected virtual void Awake()
     {
         _cc = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         health = GetComponent<Health>();
+        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+
+        materialPropertyBlock = new MaterialPropertyBlock();
+        skinnedMeshRenderer.GetPropertyBlock(materialPropertyBlock);
+
+        if(health != null)
+        {
+            health.OnDead += SwitchStateDead;
+        }
     }
 
     protected virtual void FixedUpdate()
@@ -74,12 +90,13 @@ public abstract class CharacterBase : MonoBehaviour
 
             case CharacterState.Attacking:
 
-                if(damageCaster != null)
-                {
-                    DisableDamageCaster();
-                }
-
+                //if(damageCaster != null)
+                //{
+                //    DisableDamageCaster();
+                //}
                 break;
+            case CharacterState.Dead:
+                return;
         }
         switch (newState)
         {
@@ -88,6 +105,10 @@ public abstract class CharacterBase : MonoBehaviour
 
             case CharacterState.Attacking:
                 _animator.SetTrigger(ATTACK_PARAM);
+                break;
+            case CharacterState.Dead:
+                _cc.enabled = false;
+                _animator.SetTrigger(DEAD_PARAM);
                 break;
         }
         currentState = newState;
@@ -102,6 +123,7 @@ public abstract class CharacterBase : MonoBehaviour
         {
             health.ApplyDamage(damage);
         }
+        StartCoroutine(MaterialBlink());
     }
     public void EnableDamageCaster()
     {
@@ -110,5 +132,18 @@ public abstract class CharacterBase : MonoBehaviour
     public void DisableDamageCaster()
     {
         damageCaster.DisableDamageCaster();
+    }
+
+    protected IEnumerator MaterialBlink()
+    {
+        materialPropertyBlock.SetFloat("_blink", 0.4f);
+        skinnedMeshRenderer.SetPropertyBlock(materialPropertyBlock);
+        yield return new WaitForSeconds(0.2f);
+        materialPropertyBlock.SetFloat("_blink", 0);
+        skinnedMeshRenderer.SetPropertyBlock(materialPropertyBlock);
+    }
+    private void SwitchStateDead(object sender, EventArgs o)
+    {
+        SwitchStateTo(CharacterState.Dead);
     }
 }
