@@ -21,6 +21,8 @@ public abstract class CharacterBase : MonoBehaviour
     protected Vector3 _movementDirection;
     protected float _verticalVelocity;
 
+    public GameObject itemToDrop;
+
     public enum CharacterState
     {
         Normal,
@@ -109,6 +111,7 @@ public abstract class CharacterBase : MonoBehaviour
             case CharacterState.Dead:
                 _cc.enabled = false;
                 _animator.SetTrigger(DEAD_PARAM);
+                StartCoroutine(MaterialDissolve());
                 break;
         }
         currentState = newState;
@@ -145,5 +148,33 @@ public abstract class CharacterBase : MonoBehaviour
     private void SwitchStateDead(object sender, EventArgs o)
     {
         SwitchStateTo(CharacterState.Dead);
+    }
+    protected IEnumerator MaterialDissolve()
+    {
+        yield return new WaitForSeconds(2f);
+        float dissolveTimeDuration = 2f;
+        float currentDissolveTime = 0f;
+        float dissolveHightStart = 20f;
+        float dissolveHightTarget = -10f;
+        float dissolveHight;
+        materialPropertyBlock.SetFloat("_enableDissolve", 1f);
+        skinnedMeshRenderer.SetPropertyBlock(materialPropertyBlock);
+        while(currentDissolveTime < dissolveTimeDuration)
+        {
+            currentDissolveTime += Time.deltaTime;
+            dissolveHight = Mathf.Lerp(dissolveHightStart, dissolveHightTarget, currentDissolveTime
+                / dissolveTimeDuration);
+            materialPropertyBlock.SetFloat("_dissolve_height", dissolveHight);
+            skinnedMeshRenderer.SetPropertyBlock(materialPropertyBlock);
+            yield return null;
+        }
+        DropItem();
+    }
+    protected void DropItem()
+    {
+        if(itemToDrop != null)
+        {
+            Instantiate(itemToDrop, transform.position, Quaternion.identity);
+        }
     }
 }
