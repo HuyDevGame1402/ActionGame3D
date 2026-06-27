@@ -167,6 +167,7 @@ public class PlayerCharacter : CharacterBase
     private void AddHealth(int health)
     {
         this.health.AddHealth(health);
+        PlayerVFXManager.Instance.PlayHealVFX();
     }
     private void AddCoin(int coin)
     {
