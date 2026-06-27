@@ -10,6 +10,7 @@ public abstract class CharacterBase : MonoBehaviour
     protected const string AIRBORNE_PARAM = "AirBorne";
     protected const string ATTACK_PARAM = "Attack";
     protected const string DEAD_PARAM = "Dead";
+    protected const string BEHINGHIT_PARAM = "BeingHit";
 
     protected CharacterController _cc;
     protected Animator _animator;
@@ -28,11 +29,11 @@ public abstract class CharacterBase : MonoBehaviour
         Normal,
         Attacking,
         Dead,
-
+        BeingHit,
     }
     public CharacterState currentState;
 
-    private Health health;
+    protected Health health;
     [SerializeField] private DamageCaster damageCaster;
 
     private MaterialPropertyBlock materialPropertyBlock;
@@ -97,8 +98,14 @@ public abstract class CharacterBase : MonoBehaviour
                 //    DisableDamageCaster();
                 //}
                 break;
+
             case CharacterState.Dead:
+
                 return;
+
+            case CharacterState.BeingHit:
+
+                break;
         }
         switch (newState)
         {
@@ -112,6 +119,10 @@ public abstract class CharacterBase : MonoBehaviour
                 _cc.enabled = false;
                 _animator.SetTrigger(DEAD_PARAM);
                 StartCoroutine(MaterialDissolve());
+                break;
+
+            case CharacterState.BeingHit:
+                _animator.SetTrigger(BEHINGHIT_PARAM);
                 break;
         }
         currentState = newState;
@@ -128,6 +139,7 @@ public abstract class CharacterBase : MonoBehaviour
         }
         StartCoroutine(MaterialBlink());
     }
+
     public void EnableDamageCaster()
     {
         damageCaster.EnableDamageCaster();
@@ -176,5 +188,14 @@ public abstract class CharacterBase : MonoBehaviour
         {
             Instantiate(itemToDrop, transform.position, Quaternion.identity);
         }
+    }
+    public void BeingHitAnimationEnds()
+    {
+        SwitchStateTo(CharacterState.Normal);
+    }
+
+    public virtual void PickUpItem(PickUp item)
+    {
+
     }
 }

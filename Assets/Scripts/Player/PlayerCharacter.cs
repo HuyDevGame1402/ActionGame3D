@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class PlayerCharacter : CharacterBase
 {
@@ -15,6 +16,11 @@ public class PlayerCharacter : CharacterBase
     private float timePassed;
     private float lerpTime;
 
+    private Vector3 impactOnCharacter;
+    private bool isInvincible;
+    private float invincibleDuration = 2f;
+
+    private int coin;
 
     protected override void Awake()
     {
@@ -34,7 +40,6 @@ public class PlayerCharacter : CharacterBase
                 break;
 
             case CharacterState.Attacking:
-                _movementDirection = Vector3.zero;
 
                 if (Time.time < attackStartTime + attackSlideDuration)
                 {
@@ -45,10 +50,22 @@ public class PlayerCharacter : CharacterBase
                 }
 
                 break;
+
             case CharacterState.Dead:
+
+                return;
+
+            case CharacterState.BeingHit:
+                if(impactOnCharacter.magnitude > 0.2f)
+                {
+                    _movementDirection = impactOnCharacter * Time.deltaTime;
+                }
+                impactOnCharacter = Vector3.Lerp(impactOnCharacter, Vector3.zero,
+                    Time.deltaTime * 5f);
                 return;
         }
         ApplyGravityAndMove(); // Sử dụng lại logic trọng lực và di chuyển từ lớp cha
+        _movementDirection = Vector3.zero;
     }
 
     private void CalculatePlayerMovement()
@@ -105,5 +122,54 @@ public class PlayerCharacter : CharacterBase
         {
             attackStartTime = Time.time;
         }
+
+        if(newState == CharacterState.BeingHit)
+        {
+            isInvincible = true;
+            StartCoroutine(DelayCancelInvincible());
+        }
+    }
+    public override void ApplyDamage(int damage, Vector3 attackPos = default)
+    {
+        if (isInvincible) return;
+        base.ApplyDamage(damage, attackPos);
+        SwitchStateTo(CharacterState.BeingHit);
+        AddImpact(attackPos, 10f);
+    }
+    private void AddImpact(Vector3 attackerPos, float force)
+    {
+        Vector3 impactDir = transform.position - attackerPos;
+        impactDir.Normalize();
+        impactDir.y = 0;
+        impactOnCharacter = impactDir * force;
+    }
+
+    private IEnumerator DelayCancelInvincible()
+    {
+        yield return new WaitForSeconds(invincibleDuration);
+        isInvincible = false;
+    }
+
+    public override void PickUpItem(PickUp item)
+    {
+        switch (item.type)
+        {
+            case PickUp.PickUpType.Heal:
+                AddHealth(item.value);
+                break;
+
+            case PickUp.PickUpType.Coin:
+                AddCoin(item.value);
+                break;
+
+        }
+    }
+    private void AddHealth(int health)
+    {
+        this.health.AddHealth(health);
+    }
+    private void AddCoin(int coin)
+    {
+        this.coin += coin;
     }
 }

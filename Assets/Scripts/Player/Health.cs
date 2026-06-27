@@ -27,4 +27,13 @@ public class Health : MonoBehaviour
             OnDead?.Invoke(this, EventArgs.Empty);  
         }
     }
+    public void AddHealth(int health)
+    {
+        if (currentHealth <= 0) return;
+        currentHealth += health;
+        if(currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+    }
 }
