@@ -11,6 +11,7 @@ public abstract class CharacterBase : MonoBehaviour
     protected const string ATTACK_PARAM = "Attack";
     protected const string DEAD_PARAM = "Dead";
     protected const string BEHINGHIT_PARAM = "BeingHit";
+    protected const string SLIDE_PARAM = "Slide";
 
     protected CharacterController _cc;
     protected Animator _animator;
@@ -30,6 +31,7 @@ public abstract class CharacterBase : MonoBehaviour
         Attacking,
         Dead,
         BeingHit,
+        Slide,
     }
     public CharacterState currentState;
 
@@ -93,10 +95,10 @@ public abstract class CharacterBase : MonoBehaviour
 
             case CharacterState.Attacking:
 
-                //if(damageCaster != null)
-                //{
-                //    DisableDamageCaster();
-                //}
+                if (damageCaster != null)
+                {
+                    DisableDamageCaster();
+                }
                 break;
 
             case CharacterState.Dead:

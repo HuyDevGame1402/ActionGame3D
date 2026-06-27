@@ -22,6 +22,9 @@ public class PlayerCharacter : CharacterBase
 
     private int coin;
 
+    private float attackAnimationDuration;
+    private float slideSpeed = 9f;
+
     protected override void Awake()
     {
         base.Awake(); // Gọi hàm Awake của lớp cha để lấy _cc và _animator
@@ -48,7 +51,20 @@ public class PlayerCharacter : CharacterBase
                     _movementDirection = Vector3.Lerp(transform.forward * attackSlideSpeed,
                         Vector3.zero, lerpTime);
                 }
-
+                if(_playerInput.mouseButtonDown && _cc.isGrounded)
+                {
+                    string currentClipName = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+                    attackAnimationDuration = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                
+                    if(currentClipName != "LittleAdventurerAndie_ATTACK_03"
+                        && attackAnimationDuration > 0.5f && attackAnimationDuration < 0.7f)
+                    {
+                        _playerInput.mouseButtonDown = false;
+                        SwitchStateTo(CharacterState.Attacking);
+                        CalculatePlayerMovement();
+                    }
+                
+                }
                 break;
 
             case CharacterState.Dead:
@@ -62,7 +78,10 @@ public class PlayerCharacter : CharacterBase
                 }
                 impactOnCharacter = Vector3.Lerp(impactOnCharacter, Vector3.zero,
                     Time.deltaTime * 5f);
-                return;
+                break;
+            case CharacterState.Slide:
+                _movementDirection = transform.forward * slideSpeed * Time.deltaTime;
+                break;
         }
         ApplyGravityAndMove(); // Sử dụng lại logic trọng lực và di chuyển từ lớp cha
         _movementDirection = Vector3.zero;
@@ -76,6 +95,11 @@ public class PlayerCharacter : CharacterBase
         {
             ResetInputMouseDown();
             SwitchStateTo(CharacterState.Attacking);
+            return;
+        }
+        else if (_playerInput.spaceKeyDown && _cc.isGrounded)
+        {
+            SwitchStateTo(CharacterState.Slide);
             return;
         }
 
@@ -117,6 +141,13 @@ public class PlayerCharacter : CharacterBase
     }
     protected override void SwitchStateTo(CharacterState newState)
     {
+
+        _playerInput.ClearCache();
+
+        if(currentState == CharacterState.Attacking)
+        {
+            PlayerVFXManager.Instance.StopBlade();
+        }
         base.SwitchStateTo(newState);
         if(newState == CharacterState.Attacking)
         {
@@ -127,6 +158,11 @@ public class PlayerCharacter : CharacterBase
         {
             isInvincible = true;
             StartCoroutine(DelayCancelInvincible());
+        }
+
+        if(newState == CharacterState.Slide)
+        {
+            _animator.SetTrigger(SLIDE_PARAM);
         }
     }
     public override void ApplyDamage(int damage, Vector3 attackPos = default)
@@ -172,5 +208,9 @@ public class PlayerCharacter : CharacterBase
     private void AddCoin(int coin)
     {
         this.coin += coin;
+    }
+    private void SlideAnimationEnds()
+    {
+        SwitchStateTo(CharacterState.Normal);
     }
 }
