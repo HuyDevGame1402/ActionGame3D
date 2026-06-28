@@ -77,4 +77,11 @@ public class EnemyCharacter : CharacterBase
         base.ApplyDamage(damage, attackPos);
         GetComponent<EnemyVFXManager>().PlayBeingHitVFX(attackPos);
     }
+    public void RotateToTarget()
+    {
+        if(currentState != CharacterState.Dead)
+        {
+            transform.LookAt(_targetPlayer, Vector3.up);
+        }
+    }
 }
