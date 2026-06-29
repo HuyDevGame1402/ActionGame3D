@@ -20,6 +20,8 @@ public class EnemyCharacter : CharacterBase
         GameObject playerObj = GameObject.FindWithTag("Player");
         if (playerObj != null)
             _targetPlayer = playerObj.transform;
+
+        SwitchStateTo(CharacterState.Spawn);
     }
 
     protected override void FixedUpdate()
@@ -31,6 +33,14 @@ public class EnemyCharacter : CharacterBase
                 break;
             case CharacterState.Dead:
                 return;
+
+            case CharacterState.Spawn:
+                currentSpawnTime -= Time.deltaTime;
+                if(currentSpawnTime <= 0)
+                {
+                    SwitchStateTo(CharacterState.Normal);
+                }
+                break;
         }
         ApplyGravityAndMove();
 

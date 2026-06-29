@@ -32,6 +32,7 @@ public abstract class CharacterBase : MonoBehaviour
         Dead,
         BeingHit,
         Slide,
+        Spawn,
     }
     public CharacterState currentState;
 
@@ -40,6 +41,8 @@ public abstract class CharacterBase : MonoBehaviour
 
     private MaterialPropertyBlock materialPropertyBlock;
     private SkinnedMeshRenderer skinnedMeshRenderer;
+    protected float spawnDuration;
+    protected float currentSpawnTime;
 
     protected virtual void Awake()
     {
@@ -200,4 +203,35 @@ public abstract class CharacterBase : MonoBehaviour
     {
 
     }
+
+    protected IEnumerator MaterialAppear()
+    {
+        float dissolveTimeDuration = spawnDuration;
+
+        float currentDissolveTime = 0;
+
+        float dissolveHight_start = -10f;
+
+        float dissolveHight_target = 20f;
+
+        float dissolveHight;
+        materialPropertyBlock.SetFloat("_enableDissolve", 1f);
+        skinnedMeshRenderer.SetPropertyBlock(materialPropertyBlock);
+
+        while (currentDissolveTime < dissolveTimeDuration)
+        {
+            currentDissolveTime += Time.deltaTime;
+
+            dissolveHight = Mathf.Lerp(dissolveHight_start, dissolveHight_target, currentDissolveTime / dissolveTimeDuration);
+
+            materialPropertyBlock.SetFloat("_dissolve_height", dissolveHight);
+
+            skinnedMeshRenderer.SetPropertyBlock(materialPropertyBlock);
+
+            yield return null;
+        }
+        materialPropertyBlock.SetFloat("_enableDissolve", 0f);
+
+        skinnedMeshRenderer.SetPropertyBlock(materialPropertyBlock);
+    }    
 }

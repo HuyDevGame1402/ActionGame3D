@@ -9,11 +9,20 @@ public class PickUp : MonoBehaviour
     }
     public PickUpType type;
     public int value = 20;
+
+    public ParticleSystem collertecdVFX;
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
         {
-            //other.gameObject.GetComponent<CharacterBase>().PickUpItem(this);
+            other.gameObject.GetComponent<CharacterBase>().PickUpItem(this);
+
+            if(collertecdVFX != null)
+            {
+                Instantiate(collertecdVFX, transform.position, Quaternion.identity);    
+            }
+
             Destroy(gameObject);
         }
     }

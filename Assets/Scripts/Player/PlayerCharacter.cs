@@ -148,6 +148,10 @@ public class PlayerCharacter : CharacterBase
         {
             PlayerVFXManager.Instance.StopBlade();
         }
+        if (currentState == CharacterState.Spawn)
+        {
+            isInvincible = false;
+        }
         base.SwitchStateTo(newState);
         if(newState == CharacterState.Attacking)
         {
@@ -163,6 +167,12 @@ public class PlayerCharacter : CharacterBase
         if(newState == CharacterState.Slide)
         {
             _animator.SetTrigger(SLIDE_PARAM);
+        }
+        if(newState == CharacterState.Spawn)
+        {
+            isInvincible = true;
+            currentSpawnTime = spawnDuration;
+            StartCoroutine(MaterialAppear());
         }
     }
     public override void ApplyDamage(int damage, Vector3 attackPos = default)
@@ -213,4 +223,5 @@ public class PlayerCharacter : CharacterBase
     {
         SwitchStateTo(CharacterState.Normal);
     }
+
 }
