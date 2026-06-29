@@ -5,6 +5,8 @@ using System;
 
 public class GameUIManager : MonoBehaviour
 {
+    public static GameUIManager Instance { get; private set; }
+
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private Slider healthSlider;
     private Health health;
@@ -23,8 +25,15 @@ public class GameUIManager : MonoBehaviour
 
     private GameUIState currentState;
 
+    private void Start()
+    {
+        SwitchUIState(GameUIState.GamePlay);
+    }
+
+
     private void Awake()
     {
+        Instance = this;
         health = GameManager.Instance.GetPlayerCharacter().GetComponent<Health>();
         health.OnDamage += ChangeHealthUI;
         (GameManager.Instance.GetPlayerCharacter() as PlayerCharacter).AddCoinEventAction += PlayerCharacter_AddCoinEventAction;
@@ -80,5 +89,13 @@ public class GameUIManager : MonoBehaviour
             SwitchUIState(GameUIState.GamePlay);
         }
     }
+    public void ButtonMainMenu()
+    {
+        GameManager.Instance.ReturnToTheMainMenu();
+    }
 
+    public void ButtonRestart()
+    {
+        GameManager.Instance.Restart();
+    }
 }

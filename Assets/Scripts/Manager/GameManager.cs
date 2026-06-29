@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,6 +27,11 @@ public class GameManager : MonoBehaviour
     {
         if (gameIsOver) return;
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameUIManager.Instance.TogglePauseUI();
+        }
+
         if(playerCharacter.currentState == CharacterBase.CharacterState.Dead)
         {
             gameIsOver = true;
@@ -36,5 +42,14 @@ public class GameManager : MonoBehaviour
     public CharacterBase GetPlayerCharacter()
     {
         return playerCharacter; 
+    }
+    public void ReturnToTheMainMenu()
+    {
+
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
