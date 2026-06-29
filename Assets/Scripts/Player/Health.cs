@@ -9,6 +9,13 @@ public class Health : MonoBehaviour
     [SerializeField] private int currentHealth;
     private CharacterBase character;
 
+    public event EventHandler<OnDamageClass> OnDamage;
+
+    public class OnDamageClass : EventArgs
+    {
+        public float healthPercentage;
+    }
+
     private void Awake()
     {
         currentHealth = maxHealth;
@@ -19,6 +26,8 @@ public class Health : MonoBehaviour
     {
         currentHealth -= damage;
         CheckHealth();
+
+        InvokeEventChangeHealth();
     }
     private void CheckHealth()
     {
@@ -34,6 +43,28 @@ public class Health : MonoBehaviour
         if(currentHealth > maxHealth)
         {
             currentHealth = maxHealth;
+        }
+        InvokeEventChangeHealth();
+    }
+
+    private float GetCurrentHealthPercentage()
+    {
+        return (float)currentHealth / (float)maxHealth;
+    }
+
+    private bool CheckPlayer()
+    {
+        return character as PlayerCharacter != null;
+    }
+
+    private void InvokeEventChangeHealth()
+    {
+        if (CheckPlayer())
+        {
+            OnDamage?.Invoke(this, new OnDamageClass
+            {
+                healthPercentage = GetCurrentHealthPercentage()
+            });
         }
     }
 }

@@ -228,7 +228,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 83
+  controlID: 51
   draggingID: 0
 --- !u!114 &10
 MonoBehaviour:
@@ -1316,7 +1316,7 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -15508
+  m_LastSelectedObjectID: -15192
 --- !u!114 &19
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1355,10 +1355,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 0ecbffff
-      m_LastClickedID: -13554
-      m_ExpandedIDs: 0ecbffffc4faffff
+      scrollPos: {x: 0, y: 102.20001}
+      m_SelectedIDs: e8bf0000
+      m_LastClickedID: 49128
+      m_ExpandedIDs: 1afbffffe8bf000010c0000018c000002ac00000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1420,7 +1420,7 @@ MonoBehaviour:
     m_ContainerData: []
     m_OverlaysVisible: 1
   m_SearchFilter:
-    m_NameFilter: col
+    m_NameFilter: 
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -1430,26 +1430,26 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/ProjectLittleAdventurer/VFX/Prefab
+    - Assets
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
-    m_OriginalText: col
+    m_OriginalText: 
     m_ImportLogFlags: 0
     m_FilterByTypeIntersection: 0
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/ProjectLittleAdventurer/VFX/Prefab
+  - Assets
   m_LastFoldersGridSize: 16
   m_LastProjectPath: D:\Code game sau khoa hoc 21-10-2024\ActionGame3D
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 66}
-    m_SelectedIDs: 50f70000
-    m_LastClickedID: 63312
-    m_ExpandedIDs: 00000000c2f30000c4f30000c6f30000c8f30000caf30000ccf30000cef3000010f7000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 79}
+    m_SelectedIDs: cef70000
+    m_LastClickedID: 63438
+    m_ExpandedIDs: 00000000cef70000d0f70000d2f70000d4f70000d6f70000d8f70000daf700003cf9000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1478,7 +1478,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000c2f30000c4f30000c6f30000c8f30000caf30000ccf30000cef30000
+    m_ExpandedIDs: 00000000cef70000d0f70000d2f70000d4f70000d6f70000d8f70000daf70000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1506,7 +1506,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: ac7d0000367600005a7100003479000062700000e0710000e4710000da70000038730000fc730000047e0000caf40000b4fb000072730000ce7b0000d8770000e2730000f2740000a0750000de740000f47400000a750000d2a400003ab20000207c0000447c00000a9e0000caae0000807d00008a7d0000a0830000287e0000b8810000a6810000c4840000fe840000de8b00001e8c00007c850000f884000030e5000094870000328e00003e880000dea30000f6a90000c0790000967a0000f497000034980000c67d000094fc0100dcfc0100e2820000d4970000d8820000fc820000648600006c860000788600009a8d00008e940000688d0000549100004c910000de910000a091000008920000a8cc0000b2a90000f090000008740000ec3500005036000036720000be71000060bd000076bd00007ef30000cebd0000dabd0000debd0000d6bd000064f300002abe000012be00003ebe000048be00005cbe0000f8fa000044be0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1524,7 +1524,7 @@ MonoBehaviour:
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_TrimLeadingAndTrailingWhitespace: 0
-      m_ClientGUIView: {fileID: 11}
+      m_ClientGUIView: {fileID: 7}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0

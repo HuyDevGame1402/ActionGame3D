@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class PlayerCharacter : CharacterBase
 {
@@ -24,6 +25,8 @@ public class PlayerCharacter : CharacterBase
 
     private float attackAnimationDuration;
     private float slideSpeed = 9f;
+
+    public event Action<int> AddCoinEventAction;
 
     protected override void Awake()
     {
@@ -218,10 +221,10 @@ public class PlayerCharacter : CharacterBase
     private void AddCoin(int coin)
     {
         this.coin += coin;
+        AddCoinEventAction?.Invoke(coin);
     }
     private void SlideAnimationEnds()
     {
         SwitchStateTo(CharacterState.Normal);
     }
-
 }

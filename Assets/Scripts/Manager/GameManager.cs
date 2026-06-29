@@ -32,4 +32,9 @@ public class GameManager : MonoBehaviour
             GameOver();
         }
     }
+
+    public CharacterBase GetPlayerCharacter()
+    {
+        return playerCharacter; 
+    }
 }
